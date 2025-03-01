@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        /* Dark Theme Styles */
+        body {
+            background: linear-gradient(135deg, #121212, #1e1e1e);
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .payment-container {
+            background: #222;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #00c8ff;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Terms and Conditions */
+        .tnc-container {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .tnc-container input {
+            margin-right: 8px;
+        }
+
+        .tnc-container a {
+            color: #00c8ff;
+            text-decoration: none;
+        }
+
+        .tnc-container a:hover {
+            text-decoration: underline;
+        }
+
+        /* Styled Button */
+        #pay-btn {
+            background: #00c8ff;
+            color: #121212;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            width: 100%;
+            display: block;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        #pay-btn.enabled {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #pay-btn:hover {
+            background: #00a6d6;
+            transform: scale(1.05);
+        }
+
+        /* Hidden Form */
+        #payment-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Complete Your Payment</h2>
+        <p>Amount: ₹{{ amountdisp }}</p>
+        
+        <div class="tnc-container" style="display: flex; flex-direction: column; justify-content: start;">
+            <div>
+            <input type="checkbox" id="tnc-checkbox">
+            <label for="tnc-checkbox">I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a></label>
+        </div>
+        <div>
+            <input type="checkbox" id="vdc-checkbox">
+            <label for="vdc-checkbox">No refunds are entertained and we are not responsible for failed transactions. </label>
+        </div>
+
+        <button id="pay-btn">Pay Now</button>
+    </div>
+
+    <form id="payment-form" method="POST" action="{% url 'verify_payment_workshop' %}">
+        {% csrf_token %}
+        <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+        <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+        <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+    </form>
+
+    <script>
+        var payBtn = document.getElementById('pay-btn');
+        var tncCheckbox = document.getElementById('tnc-checkbox');
+        var vdcCheckbox = document.getElementById('vdc-checkbox');
+
+        
+        document.addEventListener("DOMContentLoaded", function () {
+    
+            function updateButtonState() {
+                if (tncCheckbox.checked && vdcCheckbox.checked) {
+                    payBtn.classList.add("enabled");
+                } else {
+                    payBtn.classList.remove("enabled");
+                }
+            }
+        
+            // Listen for changes on both checkboxes
+            tncCheckbox.addEventListener("change", updateButtonState);
+            vdcCheckbox.addEventListener("change", updateButtonState);
+        });
+        
+
+        var options = {
+            "key": "{{ key_id }}",
+            "amount": "{{ amount }}",
+            "currency": "INR",
+            "name": "Workshop Registration",
+            "description": "Payment for Workshop",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('payment-form').submit();
+            },
+            "theme": {
+                "color": "#00c8ff"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        payBtn.onclick = function (e) {
+            if (!tncCheckbox.checked) {
+                alert("Please accept the Terms & Conditions before proceeding.");
+                return;
+            }
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>

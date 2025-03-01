@@ -1,0 +1,640 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENCURSO 2025 - Dark Theme</title>
+    <link rel="stylesheet" href="{%static 'styles.css'%}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+    <style>
+        .logol1 {
+            width: 50px; /* Adjust size as needed */
+            height: auto;
+            pointer-events: auto; /* Allows interaction with logos */
+          }
+          .logol2 {
+            width: 80px; /* Adjust size as needed */
+            height: auto;
+            pointer-events: auto; /* Allows interaction with logos */
+          }
+          
+          .left-logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+          }
+          
+          .right-logo {
+            
+            top: 1px;
+            right: 10px;
+          }
+          /* Medium Screens (Tablets) */
+@media (min-width: 768px) {
+    .logol1 {
+        width: 12vw;
+        max-width: 100px;
+    }
+    .logol2{
+        width: 12vw;
+        max-width: 180px;
+    }
+}
+
+/* Large Screens (Desktops) */
+@media (min-width: 1024px) {
+    .logol1 {
+        width: 12vw;
+        max-width: 100px;
+    }
+    .logol2{
+        width: 12vw;
+        max-width: 180px;
+    }
+}
+
+/* Extra Large Screens */
+@media (min-width: 1400px) {
+    .logol1 {
+        width: 12vw;
+        max-width: 100px;
+    }
+    .logol2 {
+        width: 12vw;
+        max-width: 300px;
+    }
+}
+       .d-sm-none {
+            display: none; /* Hide on small screens */
+        }
+
+        @media (min-width: 900px) { /* Large screens (lg and above) */
+            .d-lg-block {
+                display: block !important; /* Ensure it becomes visible */
+            }
+        }
+        .d-sm-block {
+    display: block;
+}
+@media (min-width: 900px) {
+        .responsive-text {
+            display: none;
+        }
+    }
+
+/* Hide on large screens (992px and above) */
+@media (min-width: 900px) {
+    .d-lg-none {
+        display: none;
+    }
+}
+
+    </style>
+    <style>/* Floating Offer Button */
+       
+       
+
+.short-text {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .full-text {
+        display: none;
+    }
+    .short-text {
+        display: inline;
+    }
+}
+
+        /* Blinking Animation */
+        @keyframes blink {
+            0% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        /* Modal Background */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Modal Content */
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            color: black;
+            border-radius: 8px;
+            width: 50%;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: red;
+}
+
+.close-btn:hover {
+    color: darkred;
+}
+
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 80%;
+            }
+            .floating-offer {
+                top: 10px;
+                right: 10px;
+                font-size: 12px;
+                padding: 8px 15px;
+            }
+        }
+
+/* Blinking Animation */
+@keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    /* Ensure center alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    color: black;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;  /* Prevents it from becoming too large */
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative; /* Allows absolute positioning for close button */
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: red;
+}
+
+.close-btn:hover {
+    color: darkred;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+    .floating-offer {
+        top: 10px;
+        right: 10px;
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+}
+/* Floating Offer Button */
+.floating-offer {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    text-align: center;
+    animation: blink 1.5s infinite alternate;
+    z-index: 1000;
+}
+
+/* Blinking Animation */
+@keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    
+    /* Ensure center alignment */
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    color: black;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;  /* Prevents it from becoming too large */
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+/* Close Button (OUTSIDE the Modal) */
+.close-btn {
+    position: fixed;
+    top: 10px;
+    right: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    color: red;
+    z-index: 3000;  /* Ensure it stays above everything */
+    background: white;
+    padding: 5px 10px;
+    border-radius: 50%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.close-btn:hover {
+    color: darkred;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+    .floating-offer {
+        top: 120px;
+        right: 10px;
+        font-size: 12px;
+        padding: 8px 15px;
+    }
+}
+
+
+@keyframes zoomInOut {
+    0% { transform: scale(1); text-shadow: 0 0 10px red; }
+    50% { transform: scale(1.3); text-shadow: 0 0 20px yellow, 0 0 30px red; }
+    100% { transform: scale(1); text-shadow: 0 0 10px red; }
+}
+
+.zoom-effect {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: white; /* Bright text */
+     /* Dark background for contrast */
+    padding: 20px;
+    display: inline-block;
+    border-radius: 10px;
+    animation: zoomInOut 1.5s infinite ease-in-out;
+}
+
+        </style>
+    
+    
+</head>
+  <div class="scroll-progress"></div>
+<body>
+       
+    <div class="logoControl">
+        <img src="{% static 'images/Jntuk-logo.png' %}" alt="Left Logo" class="logol1 left-logo">
+        <img src="{% static 'images/ENLOGO copy (2).png' %}" alt="Right Logo" class="logol2 right-logo">
+    </div>
+     
+    <!-- Header -->
+    <header>
+        <div class="floating-dock">
+            <nav class="dock-container">
+                <div class="dock-item logo-item">
+                    <span>ENCURSO</span>
+                    <div class="dock-tooltip">Home</div>
+                </div>
+                <a href="#events" class="dock-item">
+                    <img src="{% static 'images/calendar-icon.svg' %}" alt="Events">
+                    <div class="dock-tooltip">Events</div>
+                </a>
+                <a href="#workshops" class="dock-item">
+                    <img src="{% static 'images/workshop-icon.svg' %}" alt="Workshops">
+                    <div class="dock-tooltip">Workshops</div>
+                </a>
+                <a href="{% url 'basic_fee_payment' %}" class="dock-item cta-item">
+                    <img src="{% static 'images/register-icon.svg' %}" alt="Register">
+                    <div class="dock-tooltip">Register</div>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="video-container">
+            <video autoplay muted loop id="video-bg">
+                <source src="https://res.cloudinary.com/dqbrxiewy/video/upload/v1740417439/WhatsApp_Video_2025-02-24_at_22.07.53_4a550d66_w8kjx0.mp4" type="video/mp4">
+                Your browser does not support video backgrounds.
+            </video>
+        </div>
+        <div class="hero-content">
+            <div class="dept_name d-sm-none d-lg-block " >
+                <h2>Jawaharlal Nehru Technological University Kakinada </h2>
+                    <h3>University College of Engineering Kakinada
+                    <br>Department of Electric and electronics Engineering</h3>
+            </div>
+            <div class="dept_name d-sm-block d-lg-none mb-5"  >
+                <h2 style="font-size:15px;">Jawaharlal Nehru Technological University Kakinada </h2>
+                    <h3 style="font-size:10px;">University College of Engineering Kakinada
+                    <br>Department of Electric and electronics Engineering</h3>
+            </div>
+            <h1>Welcome to ENCURSO 2K25</h1>
+            
+            <p class="subtitle" style="margin-top:10px ;">We Stepup..., We Transform...</p>
+            <div >
+                <p class="zoom-effect" >Registrations are Open</p>
+            </div>
+            <div class="date-venue">
+                <p><b>15-16 March 2025</b></p>
+                <p>JNTUK</p>
+                <div class="countdown-timer">
+                    <div class="timer-block">
+                        <div class="timer-number" id="days">00</div>
+                        <div class="timer-label">Days</div>
+                    </div>
+                    <div class="timer-block">
+                        <div class="timer-number" id="hours">00</div>
+                        <div class="timer-label">Hours</div>
+                    </div>
+                    <div class="timer-block">
+                        <div class="timer-number" id="minutes">00</div>
+                        <div class="timer-label">Minutes</div>
+                    </div>
+                    <div class="timer-block">
+                        <div class="timer-number" id="seconds">00</div>
+                        <div class="timer-label">Seconds</div>
+                    </div>
+                </div> <!-- Closing the countdown-timer div properly -->
+                
+                <a href="#events" class="btn cta">Explore Events →</a>
+            </div>            
+    </section>
+
+    <div class="floating-offer" onclick="openOfferModal()">
+        <span class="full-text">🎉 Limited Time Offer! Click to View Discounts</span>
+        <span class="short-text">Limited Offer🎉</span>
+    </div>
+    
+    
+    <!-- Modal for Displaying Offers -->
+    <div id="offerModal" class="modal" >
+        <div class="modal-content " >
+                        <span class="close-btn" onclick="closeOfferModal()">&times;</span>
+            <h2>🔥 Workshop Discounts Available! 🔥</h2>
+            <ul>
+                
+                <li><strong>Hands-on Drone Technologies:</strong> Rs. 1200/-(each)  ➝ <span style="color:red;">Discount prize Rs. 1000/-</span></li>
+                <li><strong>Hands-on Drone Technologies:</strong> Rs. 3000/-(Team of 3)  ➝ <span style="color:red;">Discount prize Rs. 2400/-</span></li>
+                <li><strong>Hands-on IoT:</strong> Rs. 6000/- (Team of 5) ➝ <span style="color:red;">Discount prize Rs. 5000/-</span></li>
+                <li><strong>Hands-on IoT:</strong> Rs. 4000/- (Team of 3) ➝ <span style="color:red;">Discount prizeRs. 3000/-</span></li>
+                <li><strong>MATLAB Simulation:</strong> Rs. 900/- (each) ➝ <span style="color:red;">Discount prize Rs. 500/-</span></li>
+                <li><strong>Electric Vehicles Workshop:</strong> Rs. 1400/- (each) ➝ <span style="color:red;">Discount prize Rs. 1000/-</span></li>
+                <li><strong>Electric Vehicles Workshop:</strong> Rs. 3000/- (Team of 3) ➝ <span style="color:red;">Discount prize Rs. 2400/-</span></li>
+            </ul>
+            <h2>🔥 Events Discounts Available! 🔥</h2>
+                    <ul>
+                <li><strong>On every event there is </strong> 10% ➝ <span style="color:red;">Discount </span>
+                </li>
+                </ul>
+                
+                <p style="color: green;">📅 Offer valid until 03/03/2025. Register now!</p>
+        </div>
+    </div>
+     <script>document.addEventListener("DOMContentLoaded", function () {
+        // Open Modal
+        function openOfferModal() {
+            document.getElementById("offerModal").style.display = "flex";
+        }
+    
+        // Close Modal
+        function closeOfferModal() {
+            document.getElementById("offerModal").style.display = "none";
+        }
+    
+        // Attach events
+        document.querySelector(".floating-offer").addEventListener("click", openOfferModal);
+        document.querySelector(".close-btn").addEventListener("click", closeOfferModal);
+    
+        // Close Modal When Clicking Outside
+        window.addEventListener("click", function (event) {
+            var modal = document.getElementById("offerModal");
+            if (event.target === modal) {
+                closeOfferModal();
+            }
+        });
+    });
+    
+    
+        </script>
+    <!-- Hero Section with Video Background -->
+ 
+
+    <!-- Workshops Section -->
+    <section class="workshops" id="workshops">
+        <div class="container">
+            <h2>Featured Workshops</h2>
+            <div class="workshop-grid">
+                {% for workshop in workshops %}
+                <div class="workshop-card">
+                    <div class="card-content">
+                        <h3>{{workshop.name}}</h3>
+                        <br>
+                        <a href="{% url 'workshop_detail' workshop.id %}" class="btn">Register Now</a>
+                    </div>
+                </div>
+               {% endfor %}
+            </div>
+        </div>
+    </section>
+
+     <!-- Events Section -->
+     <section class="events" id="events">
+        <div class="container">
+            <h2>Events</h2>
+            <div class="workshop-grid">
+                {% for event in events %}
+                <!-- Workshop 1 -->
+                <div class="workshop-card">
+                    <div class="card-content">
+                        <h3>{{ event.name }}</h3>
+                        <br>
+                        <a href="{% url 'event_detail' event.id %}" class="btn">Register Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+     <!-- Sponsors Section -->
+     <section class="sponsors" id="sponsors">
+      <div class="container">
+          <h2>Our Sponsors</h2>
+          <p> Will be updated soon.....</p>
+          <div class="sponsor-grid">
+            {% for sponsor in sponsors %}
+              <div class="sponsor-item">
+                <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name}}">
+              </div>
+              {% endfor %}
+          </div>
+      </div>
+  </section>
+  
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="terms.html">Terms and Conditions</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="refund.html">Refund and cancellation policy</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>encurso2k25@gmail.com</p>
+                    <p>+91 98765 43210</p>
+                    <p>University College of Engineering Kakinada, Department of Electric and Electronics Engineering, Kakinada</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/encurso2k25?igsh=MW5ieDd6OHJ5dDU4MA=="><img src="{% static 'images/insta.webp' %}" alt="Instagram"></a>
+                        <a href="#"><img src="{% static 'images/twitter.png' %}" alt="Twitter"></a>
+                        <a href="#"><img src="{% static 'images/linkedin.webp' %}" alt="LinkedIn"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 ENCURSO. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Scroll-aware dock behavior
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            const dock = document.querySelector('.floating-dock');
+            
+            if (currentScroll > lastScroll) {
+                dock.classList.add('hidden-dock');
+            } else {
+                dock.classList.remove('hidden-dock');
+            }
+            lastScroll = currentScroll;
+        });
+    
+        // Mouse-tilt effect
+        document.querySelector('.dock-container').addEventListener('mousemove', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const tiltX = (y - rect.height/2) / 10;
+            const tiltY = (x - rect.width/2) / 10;
+            
+            e.target.style.setProperty('--mouse-x', '${tiltY}deg');
+            e.target.style.setProperty('--mouse-y', '${-tiltX}deg');
+        });
+    
+        // Reset tilt on mouse leave
+        document.querySelector('.dock-container').addEventListener('mouseleave', (e) => {
+            e.target.style.removeProperty('--mouse-x');
+            e.target.style.removeProperty('--mouse-y');
+        });
+ 
+    </script>
+     <script>
+        // Set event date (YYYY, MM (0-based), DD, HH, MM, SS)
+        const eventDate = new Date(2025, 2, 15, 10, 0, 0); // March 15, 2025, 10:00 AM
+    
+        function updateCountdown() {
+            const now = new Date();
+            let countdown = Math.floor((eventDate - now) / 1000);
+    
+            if (countdown <= 0) {
+                document.querySelector(".countdown-timer").innerHTML = "<h2>WELCOME TO ENCURSO 2K25!</h2>";
+                clearInterval(intervalId);
+                return;
+            }
+    
+            let days = Math.floor(countdown / (24 * 3600));
+            let hours = Math.floor((countdown % (24 * 3600)) / 3600);
+            let minutes = Math.floor((countdown % 3600) / 60);
+            let seconds = countdown % 60;
+    
+            // Update the UI
+            document.getElementById("days").textContent = String(days).padStart(2, '0');
+            document.getElementById("hours").textContent = String(hours).padStart(2, '0');
+            document.getElementById("minutes").textContent = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").textContent = String(seconds).padStart(2, '0');
+        }
+    
+        // Update countdown every second
+        let intervalId = setInterval(updateCountdown, 1000);
+    
+        // Initial call
+        updateCountdown();
+    
+    </script>
+</body>
+</html>

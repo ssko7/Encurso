@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENCURSO Event</title>
+    <link rel="stylesheet" href="{%static 'styl.css'%}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="video-container">
+        <video autoplay muted loop id="event-video">
+            <source src="/media/videos/6466100-uhd_3840_2160_30fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+
+
+    <!-- Workshop Content -->
+    <div class="scroll-container">
+        <section class="event-content">
+            <div class="event-card animate__animated animate__fadeInUp">
+                <div class="event-header">
+                    <h1 class="event-title">{{ photo.name }}</h1>
+                    <div class="event-meta">
+                        
+                    </div>
+                </div>
+
+                <div class="event-flex-container">
+                    <div class="event-image-container">
+                        <img src="{% static 'images/pic.png' %}" alt="AI Event" class="event-image animate__animated animate__zoomIn">
+                    </div>
+    
+                    <div class="event-details">
+                        <h2 class="section-title animate__animated animate__fadeIn">Event Overview</h2>
+                        <div class="event-description animate__animated animate__fadeIn">
+                            <div class="content_data">
+                                <h2>PHOTOGRAPHY CONTEST</h2>
+                            
+                                <h2>ABOUT:</h2>
+                                <p style="font-size:small;">
+                                    <b>Hey Cam freak!</b>  
+                                    Be ready to showcase your photography skills to the world.  
+                                    <b>ENCURSO 2K25</b> is here to provide you the stage.
+                                </p>
+                            
+                                <h2>INSTRUCTIONS:</h2>
+                                <ul style="font-size:small;">
+                                    <li>🔹 A registration fee of <b style="color: red;">Rs. 30/- per entry</b> (you can have multiple entries).</li>
+                                    <li>🔹 DM your entry and a screenshot of payment to our Instagram.</li>
+                                    <li>🔹 Make sure the photos do not contain any offensive or inappropriate content.</li>
+                                    <li>🔹 Winner is decided based on the highest number of likes.</li>
+                                    <li>🔹 Contest ends on <b style="color: yellow;">15<sup>th</sup> March, 6 PM</b>. The winner will be announced on our Instagram page.</li>
+                                </ul>
+                            
+                                <h2>PRIZES:</h2>
+                                <ul style="font-size:small;">
+                                    <li>🔹 Winning prize money – <b style="color: red;">Rs. 500/-</b></li>
+                                </ul>
+                            
+                                <!-- Discount Section -->
+                                <h2 style="color: red;">🔥 10% Discount for All Events! 🔥</h2>
+                                <p style="font-size:small; color: red;">This discount will be available until the offer expires.</p>
+                            </div>
+                            
+                        </div>
+    
+                        <button class="btn-text " style="background-color: #4a90e2;
+                        color: #ffffff !important;
+                        border: none;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        font-size: 16px;"><a href="https://www.instagram.com/encurso2k25?igsh=MW5ieDd6OHJ5dDU4MA==" class="btn cta-btn animate__animated animate__pulse animate__delay-1s" style="color: aliceblue;">Register Now</a></button>
+                    </div>
+                </div>
+                
+        </section>
+    </div>
+
+   
+</body>
+</html>

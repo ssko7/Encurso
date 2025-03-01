@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+    <style>
+        body { background: #121212; color: #ffffff; text-align: center; font-family: Arial, sans-serif; }
+        .container { margin-top: 50px; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>❌ Payment Failed</h2>
+        <p>{{ error_message }}</p>
+        <a href="{% url 'payment_page' %}" style="color: #ff5722;">Try Again</a>
+    </div>
+</body>
+</html>

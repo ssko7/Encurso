@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/ac42c3b1f7.js" crossorigin="anonymous"></script>
+
+    <style>@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap');
+
+        .bg-container {
+            background-size: cover;
+            height: 100vh;
+        }
+        
+        /* Fixed Background Video */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Pushes the video to the background */
+            overflow: hidden;
+        }
+        
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px);
+            /* Ensures the video covers the screen */
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            /* Change color & transparency */
+        }
+        
+        #registration-video {
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            filter: blur(40px);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Scroll Container */
+        .scroll-container {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* Registration Section */
+        .registration-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 2rem 2rem;
+        }
+        
+        :root {
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --accent: #4a90e2;
+            --dark-bg: #0a0a0a;
+            --dark-secondary: #1a1a1a;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .registration-card {
+            background-image: linear-gradient(#00000080, #00000080);
+            border-radius: 16px;
+            padding: 3rem;
+            font-family: "Montserrat";
+            font-size: 20px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            box-shadow: 0 0 40px rgba(77, 255, 243, 0.5);
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        /*section-title*/
+        .section-title {
+            font-family: "Open Sans";
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 38px;
+            text-align: center;
+        }
+        
+        .labeltext {
+            color: #ffffff;
+            font-size: 40px;
+        }
+        
+        /* Form Elements */
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+        
+        .error-messages {
+            background-color: #ffe6e6;
+            /* Light red background */
+            color: #d8000c;
+            /* Dark red text */
+            border: 1px solid #d8000c;
+            padding: 15px;
+            width: 50%;
+            margin: 20px auto;
+            /* Center horizontally */
+            border-radius: 8px;
+            /* Rounded corners */
+            text-align: center;
+            /* Center text */
+            font-weight: bold;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .error-messages ul {
+            list-style: none;
+            /* Remove bullet points */
+            padding: 0;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-top: 25px;
+            margin-bottom: 5px;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            background-color: #FFFFF0;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #000000;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+            outline: none;
+        }
+        
+        .buttonwala {
+            color: #FFFFF0;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+        
+        }
+        
+        .form-head {
+            font-size: 20px;
+            color: #ffffff;
+        }
+        
+        /* Floating Dock */
+        .floating-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            padding: 0.8rem;
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .registration-section {
+                padding: 80px 1rem 1rem;
+            }
+        
+            .registration-card {
+                padding: 2rem;
+            }
+        
+            .floating-dock {
+                bottom: 10px;
+                padding: 0.6rem;
+            }
+        }
+        
+        /* Confirmation Message */
+        .confirmation-message {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(74, 144, 226, 0.1);
+            border-radius: 8px;
+            margin-top: 2rem;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+        
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        
+        /* ===== Logo Styles ===== */
+        .Logo {
+            width: 150px !important;
+            height: auto !important;
+        }
+        
+        /* ===== Logo Styles ===== */
+        
+        .corner-image {
+            position: fixed;
+            top: 20px;
+            z-index: 100;
+        }
+        
+        .left-corner {
+            left: 20px;
+        }
+        
+        .right-corner {
+            right: 20px;
+        }
+        
+        .corner-image img {
+            width: 80px;
+            height: 80px;
+            border-radius: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .corner-image img:hover {
+            transform: scale(1.05);
+        }
+        
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.6) 100%);
+        }
+        
+        hr {
+            border: none;
+            height: 4px;
+            background: linear-gradient(to right, red, blue);
+        }
+        
+        .discountload {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            /* Vibrant Pink-Red Gradient */
+            height: 55px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 15px rgba(255, 118, 118, 0.4);
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            position: relative;
+            padding: 10px 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ff5252;
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .discountload:hover {
+            transform: scale(1.05);
+            /* Slight zoom effect */
+        }
+        
+        .discountload::before {
+            content: "🔥";
+        
+            left: 15px;
+            font-size: 24px;
+        }
+        
+        .discount-text {
+            color: #ffd700;
+            /* Golden color for the discount code */
+        }
+        .error-message {
+            color: white;
+            background-color: red;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="video-container">
+        <video autoplay muted loop playsinline>
+            <source src="https://res.cloudinary.com/dqbrxiewy/video/upload/v1740417439/WhatsApp_Video_2025-02-24_at_22.07.53_4a550d66_w8kjx0.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="corner-image left-corner Logo">
+        <img src="https://res.cloudinary.com/dqbrxiewy/image/upload/v1740457247/clg_logo-removebg-preview_m6s0wz.png" alt="JNTUK Logo">
+    </div>
+    <div class="corner-image right-corner">
+        <img src="https://res.cloudinary.com/dqbrxiewy/image/upload/v1740457231/festlogo-removebg-preview_wvnvwj.png" alt="Logo">
+    </div>
+
+    <form id="registrationForm" class="registration-form" method="POST" action="{% url 'register_event' %}">
+         {% csrf_token %}
+        <section class="d-flex flex-column justify-content-start">
+            <div class="registration-card">
+                <h2 class="section-title" style="text-decoration:underline">Events Registration</h2>
+                {% if error %}
+                <div class="error-message">
+                    <strong>Error:</strong> {{ error }}
+                </div>
+            {% endif %}
+                            <input type="hidden" type="text" id="fee" name="fee" value="">
+                             <input type="hidden" type="text" id="maxteamsize" name="maxteamsize" value="">
+                             <input type="hidden" type="text" id="eventname" name="eventname" value="">
+                <div class="form-group">
+                    <label for="encursoId">Encurso Id:</label>
+                    <input type="text" id="encursoId" name="encurso_id" placeholder="Enter your Encurso Id (Only 'UPPER' Case )"  required >
+                    <select name="preference_1" class="preference-dropdown">
+                        <option value="none" selected>No Preference</option>
+                        <option value="accommodation">Accommodation Only (₹250)</option>
+                        <option value="food">Food Only (₹400)</option>
+                        <option value="both">Both Food & Accommodation (₹600)</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="workshop">Select Event:</label>
+                    <select id="workshop" name="Event" required>
+                        <option value="" disabled selected>Choose a Event</option>
+                    </select>
+                </div>
+                <div id="team-section" class="hidden">
+                    <div id="team-members" class="form-group"></div>
+                </div>
+                <div class="discountload">
+                    Get Offers on Registration! <span style="color: #ffd700;"> Until 3rd March</span>
+                </div>
+                <hr />
+                <div style="display: flex; align-items: center; gap: 40px;margin-bottom:5px;">
+                    <p id="total_fee" style="color:#ffffff">Total Fee: ₹0.00</p>
+                </div>
+                <button type="submit" class="btn cta-btn" style="background-color:#2ecc71;font-weight:800;color:#ffffff">
+                    Complete Registration
+                </button>
+            </div>
+        </section>
+    </form>
+
+
+
+</body>
+    <script>
+let discountApplied = false;
+let workshops = [{
+        id: '1',
+        name: 'PAPER PRESENTATION',
+        date: 'Nov 15,16',
+        fee: 500,
+        requiresTeam: true,
+        maxTeamSize: 2
+    },
+    {
+        id: '2',
+        name: 'PAPER PRESENTATION',
+        date: 'Nov 15,16',
+        fee: 600,
+        requiresTeam: true,
+        maxTeamSize: 3
+    },
+    {
+        id: '3',
+        name: 'PAPER PRESENTATION',
+        date: 'Nov 15,16',
+        fee: 700,
+        requiresTeam: true,
+        maxTeamSize: 4
+    },
+    {
+        id: '4',
+        name: 'CIRCUIT CLASH',
+        date: 'Nov 15,16',
+        fee: 600,
+        requiresTeam: true,
+        maxTeamSize: 3
+    },
+    {
+        id: '5',
+        name: 'CODE HACKATHON',
+        date: 'Nov 15,16',
+        fee: 200,
+        requiresTeam: true,
+        maxTeamSize: 1
+    },
+    {
+        id: '6',
+        name: 'WATT-A-QUIZ!',
+        date: 'Nov 15,16',
+        fee: 600,
+        requiresTeam: true,
+        maxTeamSize: 3
+    },
+    {
+        id: '7',
+        name: 'PROJECT EXPO',
+        date: 'Nov 15,16',
+        fee: 1000,
+        requiresTeam: true,
+        maxTeamSize: 3
+    },
+    {
+        id: '8',
+        name: 'PROJECT EXPO',
+        date: 'Nov 15,16',
+        fee: 1200,
+        requiresTeam: true,
+        maxTeamSize: 4
+    }
+];
+
+let workshopSelect = document.getElementById('workshop');
+let teamMembersContainer = document.getElementById("team-members");
+let totalFeeElement = document.getElementById('total_fee');
+let applyOfferButton = document.getElementById("apply_offer");
+let teamSection = document.getElementById("team-section");
+let maxteamsize = document.getElementById("maxteamsize");
+let totfee = document.getElementById("fee");
+   let eventname = document.getElementById("eventname");
+
+
+// Populate workshop dropdown
+workshops.forEach(workshop => {
+    let option = document.createElement('option');
+    option.value = workshop.id;
+    let workname=workshop.name;
+    option.textContent = `${workshop.name} (${workshop.date}) - ₹${workshop.fee} (${workshop.maxTeamSize}-members)`;
+    option.dataset.fee = workshop.fee;
+    option.dataset.requiresTeam = workshop.requiresTeam;
+    option.dataset.maxTeamSize = workshop.maxTeamSize;
+    workshopSelect.appendChild(option);
+});
+// Update Team Member Fields
+function updateTeamMembers() {
+    let selectedOption = workshopSelect.selectedOptions[0];
+    let requiresTeam = selectedOption && selectedOption.dataset.requiresTeam === "true";
+    let maxTeamSize = parseInt(selectedOption.dataset.maxTeamSize) || 1;
+
+    teamMembersContainer.innerHTML = ""; // Clear previous inputs
+    teamSection.style.display = requiresTeam ? "block" : "none";
+    maxteamsize.value = maxTeamSize; // Update max team size
+
+    if (requiresTeam) {
+        for (let i = 2; i <= maxTeamSize; i++) {
+            let memberDiv = document.createElement("div");
+            memberDiv.classList.add("form-group");
+
+            let idLabel = document.createElement("label");
+            idLabel.textContent = `Member ${i} Encurso ID:`;
+
+            let idInput = document.createElement("input");
+            idInput.type = "text";
+            idInput.name = `team_member_${i}_id`;
+            idInput.placeholder = `Enter Member ${i} Encurso ID (Only 'UPPER' Case )`;
+            idInput.required = true;
+
+            // Accommodation & Food Options
+            let selectDropdown = document.createElement("select");
+            selectDropdown.name = `preference_${i}`;
+            selectDropdown.classList.add("preference-dropdown");
+            selectDropdown.innerHTML = `
+                <option value="none" selected>No Preference</option>
+                <option value="accommodation">Accommodation Only (₹250)</option>
+                <option value="food">Food Only (₹400)</option>
+                <option value="both">Both Food & Accommodation (₹600)</option>
+            `;
+
+            selectDropdown.addEventListener("change", updateTotal);
+
+            memberDiv.appendChild(idLabel);
+            memberDiv.appendChild(idInput);
+            memberDiv.appendChild(selectDropdown);
+            teamMembersContainer.appendChild(memberDiv);
+        }
+    }
+}
+
+// Calculate Total Fee with 20% Discount
+function updateTotal() {
+    let selectedOption = workshopSelect.selectedOptions[0];
+    let originalFee = selectedOption ? parseFloat(selectedOption.dataset.fee) || 0 : 0;
+
+    // Apply 20% discount
+    let discountedFee = originalFee * 0.9;
+
+    let totalAccommodationFee = 0;
+    let totalFoodFee = 0;
+
+    document.querySelectorAll(".preference-dropdown").forEach(dropdown => {
+        let value = dropdown.value;
+        if (value === "accommodation") totalAccommodationFee += 250;
+        if (value === "food") totalFoodFee += 400;
+        if (value === "both") totalFoodFee += 600;
+    });
+
+    let totalOriginalFee = originalFee + totalAccommodationFee + totalFoodFee;
+    let totalDiscountedFee = discountedFee + totalAccommodationFee + totalFoodFee;
+
+    // Update fee display with strikethrough for original price
+    totalFeeElement.innerHTML = `Total Fee: <s>₹${totalOriginalFee.toFixed(2)}</s> ₹${totalDiscountedFee.toFixed(2)}`;
+    // Set fee input value for backend
+    totfee.value = totalDiscountedFee;
+}
+
+// Event Listeners
+workshopSelect.addEventListener('change', () => {
+    let selectedOption = workshopSelect.selectedOptions[0];
+    eventname.value = selectedOption ? selectedOption.textContent.split(" (")[0] : "";
+    updateTeamMembers();
+    updateTotal();
+
+    // Trigger total update on accommodation/food selection for leader
+    document.querySelectorAll(".preference-dropdown").forEach(dropdown => {
+        dropdown.addEventListener("change", updateTotal);
+    })    
+});</script>
+</html>

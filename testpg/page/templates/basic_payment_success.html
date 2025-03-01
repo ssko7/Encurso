@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful</title>
+    <style>
+        body { 
+            background: #121212; 
+            color: #ffffff; 
+            text-align: center; 
+            font-family: Arial, sans-serif; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container { 
+            background: #1e1e1e; 
+            padding: 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.2);
+            width: 420px;
+        }
+        h2 { 
+            margin-bottom: 20px; 
+            font-size: 24px; 
+        }
+        p { 
+            margin: 15px 0; 
+            font-size: 18px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;  /* Increased spacing between buttons */
+            margin-top: 30px;
+        }
+        .btn {
+            background: #00c853; 
+            color: white; 
+            padding: 12px 18px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            flex: 1;
+            text-align: center;
+        }
+        .btn:hover {
+            background: #009624;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🎉 Payment Successful!</h2>
+        <p>Thank you, {{ user.full_name }}!</p>
+        <p>Your payment of ₹150 has been received.</p>
+        <p>Your Encurso-id is: <strong>{{ user.encurso_id }}</strong></p>
+        <div class="button-container">
+            <a href="{% url 'register_workshop' %}" class="btn">Register for Workshops</a>
+            <a href="{% url 'register_event' %}" class="btn">Register for Events</a>
+        </div>
+    </div>
+</body>
+</html>

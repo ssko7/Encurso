@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        h2 {
+            margin-bottom: 15px;
+        }
+        .amount {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #ff9800;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        button:disabled {
+            background-color: #777;
+            cursor: not-allowed;
+        }
+        a {
+            color: #ff9800;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Complete Your Payment</h2>
+        <p class="amount">Amount: ₹{{ amount|floatformat:2 }}</p>
+        
+        <div class="checkbox" style="display: flex; flex-direction: column; justify-content: start;">
+            <div>
+            <input type="checkbox" id="terms-checkbox">
+            <label for="terms-checkbox">I accept the <a href="terms.html" target="_blank">Terms & Conditions</a></label>
+            </div>
+            <div>
+            <input type="checkbox" id="ref-checkbox">
+            <label for="ref-checkbox">No refunds are entertained and we are not responsible for failed transactions. </label>
+            </div>
+        </div>
+        
+        <button id="pay-btn" disabled>Pay Now</button>
+
+        <form id="payment-form" method="POST" action="{% url 'verify_payment_event' %}" style="display: none;">
+            {% csrf_token %}
+            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+            <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+            <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+        </form>
+    </div>
+    
+    <script>
+
+        var payBtn = document.getElementById('pay-btn');
+        var termscheckbox = document.getElementById('terms-checkbox');
+        var refcheckbox = document.getElementById('ref-checkbox');
+
+        
+        document.addEventListener("DOMContentLoaded", function () {
+    
+            function updateButtonState() {
+                if (termscheckbox.checked && refcheckbox.checked) {
+                    payBtn.classList.add("enabled");
+                } else {
+                    payBtn.classList.remove("enabled");
+                }
+            }
+        
+            // Listen for changes on both checkboxes
+            termscheckbox.addEventListener("change", updateButtonState);
+            refcheckbox.addEventListener("change", updateButtonState);
+        });
+        
+        var options = {
+            "key": "{{ key_id }}",
+            "amount": "{{ amount }}",
+            "currency": "INR",
+            "name": "Event Registration",
+            "description": "Payment for Event",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+                document.getElementById('razorpay_signature').value = response.razorpay_signature;
+                document.getElementById('payment-form').submit();
+            },
+            "theme": {
+                "color": "#ff9800"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('pay-btn').onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>

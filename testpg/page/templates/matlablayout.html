@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENCURSO Workshop</title>
+    <link rel="stylesheet" href="{%static 'style.css'%}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/ac42c3b1f7.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Background Video -->
+    <div class="video-container">
+        <video autoplay muted loop id="workshop-video">
+            <source src="/media/videos/6466100-uhd_3840_2160_30fps.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <!-- Workshop Content -->
+    <div class="scroll-container container ">
+        <section class="workshop-content ">
+            <div class="workshop-card animate_animated animate_fadeInUp">
+                <div class="workshop-header mt-4" style="text-align: center;">
+                    <h1 class="workshop-title" >{{ matlab.name }}</h1>
+                    <div class="workshop-meta">
+                        <span class="workshop-date">{{ matlab.timing }}</span>
+                    </div>
+                </div>
+                <div class="container">
+                <div class="row">
+                <!-- New flex container for side-by-side layout -->
+                <div class="col-12 col-md-6 mt-4">
+                    <img src="https://res.cloudinary.com/dqbrxiewy/image/upload/v1740762374/evtechimg_dutunj.jpg" class="img-fluid imgedit">
+                </div>
+
+                <div class="workshop-details col-12 col-md-6 mt-4">
+                    <h2 class="section-title animate_animated animate_fadeIn" style="color: #ffffff;">Workshop Overview</h2>
+                    <div class="workshop-description animate_animated animate_fadeIn">
+                        <h2 style="text-align: center; color: yellow;">MATLAB SIMULATION</h2>
+                    
+                        <h3>OBJECTIVE:</h3>
+                        <p>
+                            The workshop mainly aims at providing participants with a comprehensive understanding of the capabilities of MATLAB 
+                            and how to use it for various applications such as Data Analysis, Modeling, and Simulation.
+                        </p>
+                    
+                        <h3>INSTRUCTIONS:</h3>
+                        <p>➤ Workshop duration - 10 hours.</p>
+                        <p>➤ Registration fee: <span style="color: yellow;">Rs. 900/- for a participant.</span> 
+                           <span style="color: red;">Discount Prize Rs. 500/-.</span></p>
+                        <p>➤ <span style="color: green;">This discount will be available up to 03/03/2025.</span></p>
+                    
+                        <h3>OUTCOMES:</h3>
+                        <p>➤ <span style="color: orange;">Participation certificate</span> will be provided for participants.</p>
+                        <p>➤ Students will be able to understand the basic to advanced concepts.</p>
+                    </div>
+                    
+                
+                    <button class="btn-text" style="background-color: #4a90e2;
+                        color: #ffffff !important;
+                        border: none;
+                        padding: 10px 20px;
+                        cursor: pointer;
+                        border-radius: 5px;
+                        font-size: 16px;">
+                        <a href="registration.html" class="btn cta-btn animate_animated animatepulse animate_delay-2s" style="color: aliceblue;">
+                            Register Now
+                        </a>
+                    </button>
+                </div>
+                
+                </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="fee-modal" class="modal">
+        <div class="modal-content">
+            <h2>Registration Disclaimer</h2>
+            <p>Basic Registration fee for the fest is <br/><strong>₹150 per person</strong>.</p>
+    
+            <!-- Encurso ID Input -->
+            <label for="encurso-id">Enter Your Encurso ID:</label>
+            <input type="text" id="encurso-id" placeholder="Enter Encurso ID">
+    
+            <!-- Error Message -->
+            <p id="error-message" style="color: red; display: none;">Invalid Encurso ID.</p>
+    
+            <!-- Create ID Link -->
+            <p>Don't have an ID? <a href="{% url 'create_encurso_id' %}">Create one here</a>.</p>
+    
+            <!-- Buttons (Side by Side) -->
+            <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 15px;">
+                <button id="verify-id">Verify & Proceed</button>
+                <button id="close-modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    
+    <!-- JavaScript for Modal Handling -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const registerBtn = document.querySelector('.cta-btn');
+        const modal = document.getElementById('fee-modal');
+        const closeModal = document.getElementById('close-modal');
+        const verifyIdBtn = document.getElementById('verify-id');
+        const encursoInput = document.getElementById('encurso-id');
+        const errorMessage = document.getElementById('error-message');
+    
+        if (registerBtn && modal && closeModal && verifyIdBtn && encursoInput) {
+            // Open Modal
+            registerBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                modal.style.display = 'flex';
+            });
+    
+            // Close Modal
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+    
+            // Verify Encurso ID
+            verifyIdBtn.addEventListener('click', function() {
+                const enteredId = encursoInput.value.trim();
+                
+                if (!enteredId) {
+                    errorMessage.textContent = "Please enter your Encurso ID.";
+                    errorMessage.style.display = "block";
+                    return;
+                }
+    
+                // Send request to Django backend for verification
+                fetch("{% url 'verify_encurso_id' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}" // Ensure CSRF token is available
+                    },
+                    body: JSON.stringify({ encurso_id: enteredId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        window.location.href = "{% url 'register_workshop' %}";
+                    } else {
+                        errorMessage.textContent = "Invalid Encurso ID.";
+                        errorMessage.style.display = "block";
+                    }
+                })
+                .catch(error => console.error("Error verifying Encurso ID:", error));
+            });
+        } else {
+            console.error("Modal elements not found. Check your HTML structure.");
+        }
+    });
+    </script>
+</body>
+</html>

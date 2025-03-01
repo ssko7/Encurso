@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENCURSO Workshop Registration</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+     <!--logos-->
+
+     <div class="corner-image left-corner">
+        <img src="/media/images/Jntuk-logo.png" alt="JNTUK Logo">    </div>
+    <div class="corner-image right-corner">
+        <img src="/media/images/ENLOGO copy (2).png" alt="Logo">    </div>
+    
+    <!-- Fixed Background Video -->
+    
+    <div class="video-container">
+        <video autoplay muted loop playsinline>
+            <source src="/media/videos/6466100-uhd_3840_2160_30fps.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
+
+    <!-- Floating Navigation Dock -->
+    <div class="floating-dock">
+        <nav class="dock-container">
+            <a href="index.html" class="dock-item logo-item">
+                <span>ENCURSO</span>
+                <div class="dock-tooltip">Home</div>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Scrollable Content -->
+    <div class="scroll-container">
+        <section class="registration-section">
+            <div class="registration-card">
+                <h2 class="section-title">Workshop Registration</h2>
+                
+                <form id="registrationForm" class="registration-form">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workshop">Select Workshop</label>
+                        <select id="workshop" name="workshop" required>
+                            <option value="">Choose a Workshop</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Special Requirements</label>
+                        <textarea id="message" rows="4"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn cta-btn">
+                        <span class="btn-text">Complete Registration</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Workshop Data
+        const workshops = [
+            { id: 'ai-ml', name: 'AI & ML Fundamentals', date: 'Nov 15' },
+            { id: 'writing', name: 'Creative Writing', date: 'Nov 16' },
+            { id: 'art', name: 'Digital Artistry', date: 'Nov 17' }
+        ];
+
+        // Populate Workshop Select
+        const workshopSelect = document.getElementById('workshop');
+        workshops.forEach(workshop => {
+            const option = document.createElement('option');
+            option.value = workshop.id;
+            option.textContent = `${workshop.name} (${workshop.date})`;
+            workshopSelect.appendChild(option);
+        });
+
+        // Form Submission
+        document.getElementById('registrationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                workshop: document.getElementById('workshop').value,
+                message: document.getElementById('message').value
+            };
+
+            // Show confirmation
+            const confirmation = document.createElement('div');
+            confirmation.className = 'confirmation-message';
+            confirmation.innerHTML = `
+                <h3>🎉 Registration Successful!</h3>
+                <p>You'll receive confirmation details via email shortly</p>
+            `;
+            document.querySelector('.registration-card').appendChild(confirmation);
+            
+            // Redirect after delay
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

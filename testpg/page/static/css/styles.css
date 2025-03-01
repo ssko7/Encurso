@@ -1,0 +1,205 @@
+/* Fixed Background Video */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Pushes the video to the background */
+  overflow: hidden;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video covers the screen */
+}
+
+
+#registration-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* ===== Logo Styles ===== */
+
+.corner-image {
+  position: fixed;
+  top: 20px;
+  z-index: 100;
+}
+
+.left-corner {
+  left: 20px;
+}
+
+.right-corner {
+  right: 20px;
+}
+
+.corner-image img {
+  width: 120%;
+  height: 120px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.corner-image img:hover {
+  transform: scale(1.05);
+}
+
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.6) 100%);
+}
+
+/* Scroll Container */
+.scroll-container {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Registration Section */
+.registration-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 2rem 2rem;
+}
+:root {
+  --text-primary: #ffffff;
+  --text-secondary: #e0e0e0;
+  --accent: #4a90e2;
+  --dark-bg: #0a0a0a;
+  --dark-secondary: #1a1a1a;
+  --border-color: rgba(255,255,255,0.1);
+}
+.registration-card {
+  background: rgba(26, 26, 26, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 3rem;
+  border: 1px solid rgba(74, 144, 226, 0.3);
+  box-shadow: 0 0 40px rgba(77, 255, 243, 0.5);
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  animation: fadeInUp 0.6s ease;
+  text-shadow: #e0e0e0 1px 0 10px;
+  text-align: center;
+}
+
+/* Form Elements */
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.error-messages {
+  background-color: #ffe6e6;  /* Light red background */
+  color: #d8000c; /* Dark red text */
+  border: 1px solid #d8000c;
+  padding: 15px;
+  width: 50%;
+  margin: 20px auto; /* Center horizontally */
+  border-radius: 8px; /* Rounded corners */
+  text-align: center; /* Center text */
+  font-weight: bold;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.error-messages ul {
+  list-style: none; /* Remove bullet points */
+  padding: 0;
+}
+
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1.2rem;
+  background: rgb(118, 168, 96);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+  outline: none;
+}
+
+/* Floating Dock */
+.floating-dock {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  padding: 0.8rem;
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .registration-section {
+      padding: 80px 1rem 1rem;
+  }
+  
+  .registration-card {
+      padding: 2rem;
+  }
+  
+  .floating-dock {
+      bottom: 10px;
+      padding: 0.6rem;
+  }
+}
+
+/* Confirmation Message */
+.confirmation-message {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(74, 144, 226, 0.1);
+  border-radius: 8px;
+  margin-top: 2rem;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
