@@ -155,8 +155,7 @@
 .close-btn:hover {
     color: darkred;
 }
-
-        
+ 
         /* Responsive Design */
         @media (max-width: 768px) {
             .modal-content {
@@ -285,6 +284,22 @@
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
     position: relative;
 }
+@media (min-width: 1024px) {
+    .modal-content {
+        width: 20%; /* Reduce width */
+        max-width: 400px; /* Limit max size */
+        padding: 10px; /* Reduce padding */
+    }
+}
+
+@media (min-width: 1440px) { /* Larger desktops */
+    .modal-content {
+        width: 20%; 
+        max-width: 350px;
+        padding: 10px;
+    }
+}
+
 
 /* Close Button (OUTSIDE the Modal) */
 .close-btn {
@@ -310,6 +325,7 @@
 @media (max-width: 768px) {
     .modal-content {
         width: 90%;
+        font-size: 12px;
     }
     .floating-offer {
         top: 120px;
