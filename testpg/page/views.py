@@ -211,6 +211,9 @@ def register_workshop(request):
         workshop_name = request.POST.get('workshopname')
         base_fee = int(request.POST.get('fee', 0))
 
+        if workshop_members.objects.filter(encurso_id=request.POST.get('encurso_id')).exists():
+            return render(request, 'register.html', {'error': 'You have already registered for a workshop. Each participant can register for only one workshop.'})
+
         # Collect all team member Encurso IDs
         for i in range(2, team_size + 1):
             team_member_id = request.POST.get(f"team_member_{i}_id")
