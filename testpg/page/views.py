@@ -103,7 +103,7 @@ def verify_encurso_id(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
 def basic_fee_payment(request):
-    return HttpResponse(f"Request scheme: {request.scheme}")
+   
     if request.method == 'POST':
         form = Basicform(request.POST)
         email = request.POST.get('email')
