@@ -344,7 +344,7 @@ def verify_payment_workshop(request):
                 workshop_razorpay_signature=signature
             )
             for user in users:
-                workshop_members.objects.create(encurso_id=user.encurso_id, workshop_name=user.workshop,
+                workshop_members.objects.create(encurso_id=user.encurso_id, workshop=user.workshop,
                                                 name=user.full_name, email=user.email, phone=user.phone,gender=user.gender,institute=user.institute,
                                                 workshop = user.workshop
                                                 )
