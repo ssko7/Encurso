@@ -103,32 +103,40 @@ def verify_encurso_id(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
 def basic_fee_payment(request):
-    print('yo')
     if request.method == 'POST':
-        print(request.POST)
         form = Basicform(request.POST)
         email = request.POST.get('email')
+
+        # Check if email already exists in the database
         if User.objects.filter(email=email).exists():
-                messages.error(request, "This email is already registered.")
-                return render(request, "basic_fee_form.html", {"error": "This email is already registered."})
+            messages.error(request, "This email is already registered.")
+            return render(request, "basic_fee_form.html", {"error": "This email is already registered."})
+
         if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
-            request.session['user_id'] = user.id 
-            
-            return redirect('basic_payment_page')
+            # Update session with the latest form data
+            request.session['form_data'] = request.POST.dict()  # Convert QueryDict to regular dict
+            request.session['email'] = email  # Store email separately for validation
+
+            return redirect('basic_payment_page')  # Redirect to payment page with updated data
         else:
             print(form.errors)
+
     else:
-        form = Basicform()
+        # If session exists, prefill the form with the stored data
+        form_data = request.session.get('form_data', {})
+        form = Basicform(initial=form_data)  # Prefill form
+
     return render(request, 'basic_fee_form.html', {'form': form})
 
-def basic_payment_page(request):
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('basic_fee_payment')  # Redirect if no user session
 
-    user = User.objects.get(id=user_id)
+def basic_payment_page(request):
+    form_data = request.session.get('form_data')
+    
+    # If user hasn't filled the form yet, redirect them back
+    if not form_data:
+        return redirect('basic_fee_payment')
+
+    email = request.session.get('email')
 
     # Create a Razorpay Order
     order_data = {
@@ -137,15 +145,17 @@ def basic_payment_page(request):
         "payment_capture": "1",
     }
     order = client.order.create(order_data)
-    
+
     # Store Razorpay Order ID in Session
     request.session['razorpay_order_id'] = order['id']
 
     return render(request, 'basic_fee_payment.html', {
-        'user': user,
+        'form_data': form_data,  # Send updated form data to template
+        'email': email,
         'order_id': order['id'],
         'razorpay_key': settings.RAZORPAY_KEY_ID
     })
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import razorpay
@@ -164,24 +174,35 @@ def verify_payment(request):
             'razorpay_signature': signature
         })
 
-        # Update payment status
-        user = User.objects.get(id=request.session.get('user_id'))
-        last_entry = User.objects.last()
-        encurso = last_entry.id
-        encurso_id = 'ENC' + str(int(encurso) + 1000)
-        user.encurso_id = encurso_id
-        user.has_paid_basicfee = True
-        user.save()
-        
+        # Retrieve form data from session
+        form_data = request.session.get('form_data')
+        if not form_data:
+            return render(request, 'payment_failed.html', {"error_message": "Session expired. Please try again."})
 
-        return render(request, 'basic_payment_success.html', {"user": user})
+        # Create & save user in DB now
+        form = Basicform(form_data)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.has_paid_basicfee = True
+            user.save()
+
+            # Generate unique encurso_id
+            encurso_id = 'ENC' + str(user.id + 1000)
+            user.encurso_id = encurso_id
+            user.save()
+
+            # Clear session data
+            del request.session['form_data']
+            del request.session['email']
+
+            return render(request, 'basic_payment_success.html', {"user": user})
+
     except razorpay.errors.SignatureVerificationError:
         return render(request, 'payment_failed.html', {"error_message": "Payment Verification Failed"})
 
 
-
-
 def register_workshop(request):
+    print('yo')
     if request.method == 'POST':
         print(request.POST)  # Debugging: Print received POST data
 
@@ -324,12 +345,11 @@ def verify_payment_workshop(request):
                 workshop_razorpay_signature=signature
             )
             for user in users:
-                workshop_members.objects.create(encurso_id=user.encurso_id, workshop_name=user.workshop,
-                                                name=user.name, email=user.email, phone=user.phone,gender=user.gender,institute=user.institute,
-                                                workshop = user.workshop
+                workshop_members.objects.create(encurso_id=user.encurso_id, workshop=user.workshop,
+                                                name=user.full_name, email=user.email, phone=user.phone,gender=user.gender,institute=user.institute,
                                                 )
 
-            workshop_name =  workshop_name = users.first().workshop
+            workshop_name = users.first().workshop
             encurso_ids = [user.encurso_id for user in users]
             total_amount = users.first().workshop_total_fee   # Sum total fees for all members
 
@@ -351,34 +371,6 @@ def verify_payment_workshop(request):
 
 def index(request):
     return render(request,'home.html')
-@csrf_exempt
-def verify_payment(request):
-    try:
-        payment_id = request.GET.get('payment_id')
-        order_id = request.GET.get('order_id')
-        signature = request.GET.get('signature')
-
-        # Verify payment
-        client.utility.verify_payment_signature({
-            'razorpay_order_id': order_id,
-            'razorpay_payment_id': payment_id,
-            'razorpay_signature': signature
-        })
-
-        # Update payment status
-        user = User.objects.get(id=request.session.get('user_id'))
-        last_entry = User.objects.last()
-        encurso = last_entry.id
-        encurso_id = 'ENC' + str(int(encurso) + 1000)
-        user.encurso_id = encurso_id
-        user.has_paid_basicfee = True
-        user.save()
-        
-
-        return render(request, 'basic_payment_success.html', {"user": user})
-    except razorpay.errors.SignatureVerificationError:
-        return render(request, 'payment_failed.html', {"error_message": "Payment Verification Failed"})
-
 
 
 def register_event(request):

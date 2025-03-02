@@ -2,6 +2,7 @@
 <html>
 
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -10,7 +11,7 @@
     <script src="https://kit.fontawesome.com/ac42c3b1f7.js" crossorigin="anonymous"></script>
 
     <style>@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Caveat:wght@400;700&family=Lobster&family=Monoton&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display+SC:ital,wght@0,400;0,700;1,700&family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Source+Sans+Pro:ital,wght@0,400;0,700;1,700&family=Work+Sans:ital,wght@0,400;0,700;1,700&display=swap');
-
+         
         .bg-container {
             background-size: cover;
             height: 100vh;
@@ -332,6 +333,45 @@
             border-radius: 5px;
             margin-bottom: 15px;
         }
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+            .container {
+                width: 50%;
+            }
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                width: 25%; /* Reduce width */
+                padding: 15px; /* Reduce padding */
+            }
+        }
+        @media (max-width: 768px) {
+            h1, h2 {
+                font-size: 1.5rem; /* Reduce heading size */
+            }
+            button {
+                font-size: 14px;
+                padding: 8px 12px; /* Reduce button size */
+            }
+        }
+        @media (max-width: 768px) {
+            input, select {
+                font-size: 14px;
+                padding: 80px;
+            }
+        }
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+                font-size: 12px;
+            }
+        }
+        
+        
+                
+        
     </style>
 </head>
 
@@ -412,8 +452,8 @@ let workshops = [
     { id: '2', name: 'HANDS-ON IOT', date: 'Nov 15,16', fee: 6000, requiresTeam: true, maxTeamSize: 5 },
     { id: '3', name: 'HANDS-ON ELECTRIC VEHICLES', date: 'Nov 15,16', fee: 1400, requiresTeam: true, maxTeamSize: 1 },
     { id: '4', name: 'HANDS-ON ELECTRIC VEHICLES', date: 'Nov 15,16', fee: 3000, requiresTeam: true, maxTeamSize: 3 },
-    { id: '5', name: 'HANDS-ON DRONE TECHNOLOGY', date: 'Nov 15,16', fee: 1200, requiresTeam: true, maxTeamSize: 1 },
-    { id: '6', name: 'HANDS-ON DRONE TECHNOLOGY', date: 'Nov 15,16', fee: 3000, requiresTeam: true, maxTeamSize: 3 },
+    { id: '5', name: 'HANDS-ON DRONE TECHNOLOGIES', date: 'Nov 15,16', fee: 1200, requiresTeam: true, maxTeamSize: 1 },
+    { id: '6', name: 'HANDS-ON DRONE TECHNOLOGIES', date: 'Nov 15,16', fee: 3000, requiresTeam: true, maxTeamSize: 3 },
     { id: '7', name: 'MATLAB SIMULATION', date: 'Nov 15,16', fee: 900, requiresTeam: false, maxTeamSize: 1 }
 ];
 
@@ -524,8 +564,13 @@ document.addEventListener("DOMContentLoaded", function () {
     workshopSelect.addEventListener('change', () => {
         updateTeamMembers();
         updateTotal();
+        
+        // Update workshop name input value
+        let selectedOption = workshopSelect.selectedOptions[0];
+        if (selectedOption) {
+            workshopname.value = selectedOption.textContent.split('(')[0].trim();
+        }
     });
-
     document.querySelector(".preference-dropdown").addEventListener("change", updateTotal);
 });
 

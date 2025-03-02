@@ -81,8 +81,8 @@ class Sponsor(models.Model):
     logo = models.ImageField(upload_to='sponsors/', blank=True, null=True)  # Sponsor logo
 
     def str(self):
-        return f'{ self.name}-{self.logo}'
-    
+        return self.name
+       
 class workshop_members(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     encurso_id = models.CharField(max_length=255,blank=True,null=True)
@@ -102,3 +102,5 @@ class event_members(models.Model):
     home_town = models.CharField(max_length=255, blank=True, null=True)
     institute = models.CharField(max_length=255, blank=True, null=True)
     workshop = models.CharField(max_length=255, blank=True,null= True)
+
+
