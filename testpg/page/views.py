@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 import razorpay, json
 from .models import Registration, Workshop, TeamMember, User, Events, Sponsor,workshop_members,event_members
@@ -103,6 +103,7 @@ def verify_encurso_id(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
 def basic_fee_payment(request):
+    return HttpResponse(f"Request scheme: {request.scheme}")
     if request.method == 'POST':
         form = Basicform(request.POST)
         email = request.POST.get('email')
@@ -113,23 +114,28 @@ def basic_fee_payment(request):
             return render(request, "basic_fee_form.html", {"error": "This email is already registered."})
 
         if form.is_valid():
-            # Store form data in the session (instead of saving to DB)
-            request.session['form_data'] = request.POST  # Store all form data
+            # Update session with the latest form data
+            request.session['form_data'] = request.POST.dict()  # Convert QueryDict to regular dict
             request.session['email'] = email  # Store email separately for validation
 
-            return redirect('basic_payment_page')
+            return redirect('basic_payment_page')  # Redirect to payment page with updated data
         else:
             print(form.errors)
 
     else:
-        form = Basicform()
-    
+        # If session exists, prefill the form with the stored data
+        form_data = request.session.get('form_data', {})
+        form = Basicform(initial=form_data)  # Prefill form
+
     return render(request, 'basic_fee_form.html', {'form': form})
 
 
 def basic_payment_page(request):
-    if 'form_data' not in request.session:
-        return redirect('basic_fee_payment')  # Redirect if no form data
+    form_data = request.session.get('form_data')
+    
+    # If user hasn't filled the form yet, redirect them back
+    if not form_data:
+        return redirect('basic_fee_payment')
 
     email = request.session.get('email')
 
@@ -145,6 +151,7 @@ def basic_payment_page(request):
     request.session['razorpay_order_id'] = order['id']
 
     return render(request, 'basic_fee_payment.html', {
+        'form_data': form_data,  # Send updated form data to template
         'email': email,
         'order_id': order['id'],
         'razorpay_key': settings.RAZORPAY_KEY_ID
@@ -365,34 +372,6 @@ def verify_payment_workshop(request):
 
 def index(request):
     return render(request,'home.html')
-@csrf_exempt
-def verify_payment(request):
-    try:
-        payment_id = request.GET.get('payment_id')
-        order_id = request.GET.get('order_id')
-        signature = request.GET.get('signature')
-
-        # Verify payment
-        client.utility.verify_payment_signature({
-            'razorpay_order_id': order_id,
-            'razorpay_payment_id': payment_id,
-            'razorpay_signature': signature
-        })
-
-        # Update payment status
-        user = User.objects.get(id=request.session.get('user_id'))
-        last_entry = User.objects.last()
-        encurso = last_entry.id
-        encurso_id = 'ENC' + str(int(encurso) + 1000)
-        user.encurso_id = encurso_id
-        user.has_paid_basicfee = True
-        user.save()
-        
-
-        return render(request, 'basic_payment_success.html', {"user": user})
-    except razorpay.errors.SignatureVerificationError:
-        return render(request, 'payment_failed.html', {"error_message": "Payment Verification Failed"})
-
 
 
 def register_event(request):
