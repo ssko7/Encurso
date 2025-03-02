@@ -1,11 +1,11 @@
 from django.urls import path
-from .views import  contactus,refund,privacy,terms,verify_encurso_id,verify_payment_workshop,register_workshop,index,basic_fee_payment,basic_payment_page,verify_payment_event,register_event,home,dronelayout_view,evlayout_view,iotlayout_view,matlablayout_view,cktlayout_view,hackathonlayout_view,pplayout_view,quizzlayout_view,photolayout_view,projectlayout_view,workshop_detail,event_detail,verify_payment,create_encurso_id
+from .views import  recover_encurso_id,contactus,refund,privacy,terms,verify_encurso_id,verify_payment_workshop,register_workshop,index,basic_fee_payment,basic_payment_page,verify_payment_event,register_event,home,dronelayout_view,evlayout_view,iotlayout_view,matlablayout_view,cktlayout_view,hackathonlayout_view,pplayout_view,quizzlayout_view,photolayout_view,projectlayout_view,workshop_detail,event_detail,verify_payment,create_encurso_id
 
 
 
 urlpatterns = [
     path('contact.html/',contactus,name='contactus'),
-
+    path("recover-encurso-id/", recover_encurso_id, name="recover_encurso_id"),
     path('refund.html/',refund,name='refund'),
     path('privacy.html/', privacy, name='privacy'),
     path('terms.html/',terms,name='terms'),

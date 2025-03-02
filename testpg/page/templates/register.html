@@ -368,8 +368,90 @@
                 font-size: 12px;
             }
         }
-        
-        
+/* Overlay Background */
+.popup {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(25, 25, 25, 0.85); /* Darker Glassmorphism */
+    backdrop-filter: blur(15px);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.5);
+    width: 360px;
+    color: #fff;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Header */
+.popup h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: cyan;
+    text-shadow: 0px 0px 5px cyan;
+}
+
+/* Close Button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+/* Input Fields */
+.popup input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    background: rgba(50, 50, 50, 0.9);
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    box-shadow: inset 0px 0px 5px cyan;
+    transition: all 0.3s ease-in-out;
+}
+
+.popup input:focus {
+    box-shadow: inset 0px 0px 10px cyan;
+}
+
+/* Recover Button */
+#recover-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: linear-gradient(45deg, cyan, #00f7ff);
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #111;
+    transition: all 0.3s ease-in-out;
+}
+
+#recover-btn:hover {
+    background: linear-gradient(45deg, #00f7ff, cyan);
+    box-shadow: 0px 0px 12px cyan;
+}
+
+/* Result Message */
+#result-message {
+    margin-top: 12px;
+    font-size: 16px;
+    color: lightgreen;
+    font-weight: bold;
+}
+
                 
         
     </style>
@@ -417,6 +499,8 @@
 
                 </div>
 
+                <h4 style="color:#f7ff01"><a href="#" id="forgot-encurso-id">Forgot encurso_id?</a></h4>
+
                 <div class="form-group">
                     <label for="workshop">Select Workshop:</label>
                     <select id="workshop" name="workshop" required>
@@ -440,10 +524,71 @@
         </section>
     </form>
 
-
+<!-- Forgot ID Popup -->
+<div id="forgot-popup" class="popup">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <h2>Recover Your Encurso ID</h2>
+        <label for="forgot-email">Email:</label>
+        <input type="email" id="forgot-email" required>
+        <label for="forgot-phone">Phone Number:</label>
+        <input type="text" id="forgot-phone" required>
+        <button id="recover-btn">Recover</button>
+        <p id="result-message"></p>
+    </div>
+</div>
 
 </body>
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const forgotLink = document.getElementById("forgot-encurso-id");
+        const popup = document.getElementById("forgot-popup");
+        const closeBtn = document.querySelector(".close");
+        const recoverBtn = document.getElementById("recover-btn");
+        const resultMessage = document.getElementById("result-message");
+    
+        // Show popup
+        forgotLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            popup.style.display = "block";
+        });
+    
+        // Close popup
+        closeBtn.addEventListener("click", function () {
+            popup.style.display = "none";
+            resultMessage.textContent = ""; // Clear message when closing
+        });
+    
+        // Handle recovery
+        recoverBtn.addEventListener("click", function () {
+            const email = document.getElementById("forgot-email").value.trim();
+            const phone = document.getElementById("forgot-phone").value.trim();
+    
+            if (!email || !phone) {
+                resultMessage.textContent = "Please enter both email and phone.";
+                return;
+            }
+    
+            // API request
+            fetch("/recover-encurso-id/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: email, phone: phone }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    resultMessage.textContent = `Your Encurso ID: ${data.encurso_id}`;
+                } else {
+                    resultMessage.textContent = "Invalid details. Please try again.";
+                }
+            })
+            .catch(error => {
+                resultMessage.textContent = "Something went wrong. Try again later.";
+            });
+        });
+    });
+    
     let discountApplied = false;
 
 // Workshop data

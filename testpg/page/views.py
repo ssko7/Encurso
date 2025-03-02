@@ -385,7 +385,9 @@ def register_event(request):
         team_size = int(request.POST.get('maxteamsize', 1))  # Default to 1 if not given
         event_name = request.POST.get('eventname')
         total_fee = int(request.POST.get('fee', 0))
-
+        
+        if event_members.objects.filter(encurso_id=request.POST.get('encurso_id')).exists():
+            return render(request, 'event_register.html', {'error': 'You have already registered for a event. Each participant can register for only one workshop.'})
         # Collect all team member Encurso IDs
         for i in range(2, team_size + 1):
             team_member_id = request.POST.get(f"team_member_{i}_id")
@@ -543,3 +545,24 @@ def refund(request):
 
 def contactus(request):
     return render(request, 'contact.html')
+
+@csrf_exempt  # Disable CSRF for simplicity (better to use proper authentication)
+def recover_encurso_id(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            phone = data.get("phone")
+
+            # Check if a user exists with the given email and phone
+            user = User.objects.filter(email=email, phone=phone).first()
+
+            if user:
+                return JsonResponse({"success": True, "encurso_id": user.encurso_id})
+            else:
+                return JsonResponse({"success": False, "message": "Invalid details"})
+        
+        except Exception as e:
+            return JsonResponse({"success": False, "message": str(e)})
+
+    return JsonResponse({"success": False, "message": "Invalid request"}, status=400)
