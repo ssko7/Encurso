@@ -101,6 +101,7 @@ class event_members(models.Model):
     gender = models.CharField(max_length=10, null=True, blank=True)
     home_town = models.CharField(max_length=255, blank=True, null=True)
     institute = models.CharField(max_length=255, blank=True, null=True)
-    workshop = models.CharField(max_length=255, blank=True,null= True)
+    event = models.CharField(max_length=255, blank=True,null= True)
+
 
 
