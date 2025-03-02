@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.conf import settings
 import razorpay, json
 from .models import Registration, Workshop, TeamMember, User, Events, Sponsor,workshop_members,event_members
@@ -103,7 +103,6 @@ def verify_encurso_id(request):
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
 def basic_fee_payment(request):
-   
     if request.method == 'POST':
         form = Basicform(request.POST)
         email = request.POST.get('email')
@@ -350,7 +349,7 @@ def verify_payment_workshop(request):
                                                 workshop = user.workshop
                                                 )
 
-            workshop_name =  workshop_name = users.first().workshop
+            workshop_name = users.first().workshop
             encurso_ids = [user.encurso_id for user in users]
             total_amount = users.first().workshop_total_fee   # Sum total fees for all members
 
