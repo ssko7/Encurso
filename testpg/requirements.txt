@@ -5,6 +5,7 @@ Django==4.2.19
 gunicorn==21.2.0
 psycopg2-binary==2.9.10
 sqlparse==0.5.3
-whitenoise==6.6.0
 razorpay
 dj_database_url
+whitenoise==6.6.0
+
